@@ -53,8 +53,9 @@
 
 ```bash
 pip install torch matplotlib numpy pillow
-python3 main.py            # 默认 seed 8
+python3 main.py            # 默认 seed 8，只训练并打印结果，不出图
 python3 main.py --seed 3   # 换一个随机初始化
+python3 main.py --images   # 同时重新生成 image/ 里的全部快照和 GIF
 ```
 
 代码按职责拆成了几个文件，最后在 `main.py` 里组装：
@@ -89,7 +90,7 @@ b^{(2)} = -0.0148
 
 ## 5. Decision boundary 的演化
 
-图中的颜色是模型输出 $`y`$ 的大小（蓝色偏 0，红色偏 1），黑线是 $`y = 0.5`$ 的 decision boundary。每一次参数更新后都会保存一张图到 `image/steps/`，最后一张同时保存为 `image/final.png`（也就是本页顶部的图）。
+图中的颜色是模型输出 $`y`$ 的大小（蓝色偏 0，红色偏 1），黑线是 $`y = 0.5`$ 的 decision boundary。加上 `--images` 运行时，每一次参数更新后都会保存一张图到 `image/steps/`，最后一张同时保存为 `image/final.png`（也就是本页顶部的图）。
 
 <p align="center">
   <img src="image/training.gif" width="360" alt="decision boundary 训练过程动画">

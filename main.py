@@ -20,7 +20,9 @@ def parse_args():
     parser.add_argument("--tol", type=float, default=1e-4,
                         help="stop once the MSE loss drops below this value")
     parser.add_argument("--image-dir", type=Path, default=Path(__file__).parent / "image")
-    parser.add_argument("--no-images", action="store_true")
+    parser.add_argument("--images", action="store_true",
+                        help="save a decision boundary snapshot at every update "
+                             "(clears and regenerates --image-dir)")
     return parser.parse_args()
 
 
@@ -49,10 +51,10 @@ def main():
     torch.manual_seed(args.seed)
     model = XORNet()
 
-    # 3. 画图：每次参数更新后存一张 decision boundary
+    # 3. 画图（默认关闭，加 --images 才开）：每次参数更新后存一张 decision boundary
     frame_paths = []
     on_step = None
-    if not args.no_images:
+    if args.images:
         shutil.rmtree(args.image_dir, ignore_errors=True)
         (args.image_dir / "steps").mkdir(parents=True)
 
