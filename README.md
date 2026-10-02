@@ -49,13 +49,23 @@
 
 ## 4. 让模型自己训练
 
-`train.py` 搭建了和上面完全相同的结构（2 个输入 → 2 个 ReLU 隐藏单元 → 1 个线性输出），但**不预设任何权重**：参数使用 PyTorch 默认的随机初始化，然后用 Adam（学习率 0.05）在四个 XOR 样本上做 full-batch 训练，最小化 MSE loss，直到 loss 低于 $`10^{-4}`$ 为止。
+`model.py` 搭建了和上面完全相同的结构（2 个输入 → 2 个 ReLU 隐藏单元 → 1 个线性输出），但**不预设任何权重**：参数使用 PyTorch 默认的随机初始化，然后用 Adam（学习率 0.05）在四个 XOR 样本上做 full-batch 训练，最小化 MSE loss，直到 loss 低于 $`10^{-4}`$ 为止。
 
 ```bash
 pip install torch matplotlib numpy pillow
-python3 train.py            # 默认 seed 8
-python3 train.py --seed 3   # 换一个随机初始化
+python3 main.py            # 默认 seed 8
+python3 main.py --seed 3   # 换一个随机初始化
 ```
+
+代码按职责拆成了几个文件，最后在 `main.py` 里组装：
+
+| 文件 | 职责 |
+| :--- | :--- |
+| `data.py` | 生成 XOR 的四个样本 |
+| `model.py` | 定义 2-2-1 的 ReLU 网络 |
+| `train.py` | 训练循环，每次更新后通过回调把 step 和 loss 交给调用方 |
+| `plot.py` | 画 decision boundary 快照、合成 GIF |
+| `main.py` | 解析参数，把上面几部分组装起来并打印结果 |
 
 默认 seed 下训练在 134 次更新后停止（loss $`\approx 6.5 \times 10^{-5}`$），学到的参数是：
 
